@@ -9,22 +9,33 @@ import interfaces.IVendingMachineProduct;
 import interfaces.IVendingMachine;
 import interfaces.IProductRecord;
 
+import java.util.HashMap;
+
 /**
  * This class represents a simple vending machine which can stock and sell products.
  *
  */
 public class VendingMachine extends AbstractFactoryClient implements IVendingMachine {
 
-    @Override
-    public void registerProduct(IVendingMachineProduct vendingMachineProduct) throws LaneCodeAlreadyInUseException {
-        // TODO Auto-generated method stub
+    public HashMap<IVendingMachineProduct, IProductRecord> products = new HashMap<IVendingMachineProduct, IProductRecord>();
 
+
+    @Override
+    public void registerProduct(IVendingMachineProduct vendingMachineProduct) throws LaneCodeAlreadyInUseException, NullPointerException {
+
+        if (products.containsKey(vendingMachineProduct)) throw new LaneCodeAlreadyInUseException();
+        if(vendingMachineProduct == null) throw new NullPointerException();
+
+        IProductRecord record = new ProductRecord();
+        products.put(vendingMachineProduct, record);
     }
 
     @Override
     public void unregisterProduct(IVendingMachineProduct vendingMachineProduct) throws LaneCodeNotRegisteredException {
-        // TODO Auto-generated method stub
+        if (!products.containsKey(vendingMachineProduct)) throw new LaneCodeNotRegisteredException();
 
+
+        products.remove(vendingMachineProduct);
     }
 
     @Override
@@ -41,8 +52,7 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
 
     @Override
     public int getNumberOfProducts() {
-        // TODO Auto-generated method stub
-        return 0;
+        return products.size();
     }
 
     @Override

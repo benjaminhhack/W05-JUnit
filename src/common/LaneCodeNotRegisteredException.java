@@ -5,4 +5,9 @@ package common;
  *
  */
 public class LaneCodeNotRegisteredException extends Exception {
+
+    @Override
+    public String getMessage() {
+        return "This lane code is not registered";
+    }
 }

@@ -1,6 +1,8 @@
 package impl;
 
 import common.ProductUnavailableException;
+import interfaces.IFactory;
+import interfaces.IVendingMachine;
 import interfaces.IVendingMachineProduct;
 import interfaces.IProductRecord;
 
@@ -10,6 +12,9 @@ import interfaces.IProductRecord;
  */
 public class ProductRecord implements IProductRecord {
 
+    int numberOfSales;
+    int numberAvailable;
+
     @Override
     public IVendingMachineProduct getProduct() {
         // TODO Auto-generated method stub
@@ -18,14 +23,12 @@ public class ProductRecord implements IProductRecord {
 
     @Override
     public int getNumberOfSales() {
-        // TODO Auto-generated method stub
-        return 0;
+        return numberOfSales;
     }
 
     @Override
     public int getNumberAvailable() {
-        // TODO Auto-generated method stub
-        return 0;
+        return numberAvailable;
     }
 
     @Override

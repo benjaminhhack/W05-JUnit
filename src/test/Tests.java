@@ -22,4 +22,22 @@ public class Tests extends AbstractFactoryClient {
         IVendingMachineProduct vendingMachineProduct = getFactory().makeVendingMachineProduct("A1", "Haggis Crisps");
         assertNotNull(vendingMachineProduct);
     }
+
+    /**
+     * This checks that the factory was able to call a sensible constructor to get a non-null instance of IVendingMachine.
+     */
+    @Test
+    public void vendingMachineNotNull(){
+       IVendingMachine vendingMachine = getFactory().makeVendingMachine();
+       assertNotNull(vendingMachine);
+    }
+
+    /**
+     * This checks that the factory was able to call a sensible constructor to get a non-null instance of IProductRecord.
+     */
+    @Test
+    public void productRecordNotNull(){
+        IProductRecord productRecord = getFactory().makeProductRecord(getFactory().makeVendingMachineProduct("A2", "Kit-Kat"));
+        assertNotNull(productRecord);
+    }
 }

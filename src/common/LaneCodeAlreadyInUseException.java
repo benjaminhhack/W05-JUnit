@@ -5,4 +5,9 @@ package common;
  *
  */
 public class LaneCodeAlreadyInUseException extends Exception {
+
+    @Override
+    public String getMessage() {
+        return "This lane code is already in use.";
+    }
 }
