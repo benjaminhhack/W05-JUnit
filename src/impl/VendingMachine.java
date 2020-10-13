@@ -13,11 +13,12 @@ import java.util.HashMap;
 
 /**
  * This class represents a simple vending machine which can stock and sell products.
- *
+ * @see IVendingMachine for method doc strings
  */
 public class VendingMachine extends AbstractFactoryClient implements IVendingMachine {
 
-    public HashMap<String, IProductRecord> products;
+    public HashMap<String, IProductRecord> products; // hashmap for storing lane code and product record
+    IProductRecord record;
 
     public VendingMachine(){
         this.products = new HashMap<>();
@@ -28,7 +29,8 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
 
         if (products.containsKey(vendingMachineProduct.getLaneCode())) throw new LaneCodeAlreadyInUseException();
 
-        IProductRecord record = new ProductRecord(vendingMachineProduct);
+        // creates record for product
+        record = new ProductRecord(vendingMachineProduct);
         products.put(vendingMachineProduct.getLaneCode(), record);
     }
 
@@ -44,7 +46,7 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
 
         if (!products.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
 
-        IProductRecord record = products.get(laneCode);
+        record = products.get(laneCode);
         record.addItem();
     }
 
@@ -53,7 +55,7 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
         if (!products.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
         if (products.get(laneCode).getNumberAvailable() == 0) throw new ProductUnavailableException();
 
-        IProductRecord record = products.get(laneCode);
+        record = products.get(laneCode);
         record.buyItem();
     }
 
@@ -88,13 +90,10 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
 
         if (products.size() < 1) throw new LaneCodeNotRegisteredException();
 
-        /* starts at first product registered most popular, only returns one product
-         *
-         */
         int maxSales = 0;
 
         String firstKey = products.keySet().stream().findFirst().get();
-        IVendingMachineProduct mostPopular = products.get(firstKey).getProduct();
+        IVendingMachineProduct mostPopular = products.get(firstKey).getProduct(); //sets the first registered product to the most
 
         for (IProductRecord record: products.values()){
 
@@ -102,9 +101,7 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
                 mostPopular = record.getProduct();
                 maxSales = record.getNumberOfSales();
             }
-
         }
-
         return mostPopular;
     }
 

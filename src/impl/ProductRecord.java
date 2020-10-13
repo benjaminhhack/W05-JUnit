@@ -6,7 +6,7 @@ import interfaces.IProductRecord;
 
 /**
  * This class represents a ProductRecord, recording information relating to a product sold in a vending machine.
- *
+ * @see IProductRecord for method doc strings
  */
 public class ProductRecord implements IProductRecord {
 
@@ -15,10 +15,13 @@ public class ProductRecord implements IProductRecord {
     IVendingMachineProduct product;
 
     public ProductRecord(IVendingMachineProduct product) {
+        if (product == null) throw new NullPointerException("Vending Machine Product cannot be null.");
         this.numberOfSales = 0;
         this.numberAvailable = 0;
         this.product = product;
     }
+
+
 
     @Override
     public IVendingMachineProduct getProduct() {

@@ -2,14 +2,20 @@ package test;
 
 import common.AbstractFactoryClient;
 import common.ProductUnavailableException;
+import impl.ProductRecord;
 import interfaces.IProductRecord;
 import interfaces.IVendingMachineProduct;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This is a JUnit test class for the Product Record ADT
+ */
 public class ProductRecordTests extends AbstractFactoryClient {
     private IProductRecord record;
     private IVendingMachineProduct product;
@@ -26,11 +32,32 @@ public class ProductRecordTests extends AbstractFactoryClient {
         record = null;
     }
 
+    /**
+     * This checks that a a record can't be created with a null product.
+     */
+    @Test
+    public void testNullProduct(){
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            ProductRecord newRecord = new ProductRecord(null);
+        });
+        String expected = "Vending Machine Product cannot be null.";
+        String actual = exception.getMessage();
+
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * This checks that the getProduct method works.
+     */
     @Test
     public void testGetProduct(){
         assertEquals(product, record.getProduct());
     }
 
+    /**
+     * This checks that the addItem method works.
+     */
     @Test
     public void testAddItem() {
         record.addItem();
@@ -42,6 +69,9 @@ public class ProductRecordTests extends AbstractFactoryClient {
         assertEquals(20, record.getNumberAvailable());
     }
 
+    /**
+     * This checks that the buyItem method works.
+     */
     @Test
     public void testBuyItem() throws ProductUnavailableException {
         record.addItem();
@@ -59,6 +89,10 @@ public class ProductRecordTests extends AbstractFactoryClient {
         assertEquals(8, record.getNumberOfSales());
     }
 
+    /**
+     * This checks that the buy item throwns the appropriate exception when the product
+     * is not available.
+     */
     @Test
     public void testBuyItemException() {
         Exception exception = assertThrows(common.ProductUnavailableException.class, () -> record.buyItem());

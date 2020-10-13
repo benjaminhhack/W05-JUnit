@@ -1,16 +1,18 @@
 package test;
 
+import impl.ProductRecord;
+import impl.VendingMachineProduct;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import common.AbstractFactoryClient;
 import interfaces.IVendingMachineProduct;
 import interfaces.IVendingMachine;
 import interfaces.IProductRecord;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
- * This is a JUnit test class for the Vending Machine ADT.
+ * This is a JUnit test class for the Factory ADT
  */
 public class Tests extends AbstractFactoryClient {
 
@@ -40,4 +42,69 @@ public class Tests extends AbstractFactoryClient {
         IProductRecord productRecord = getFactory().makeProductRecord(getFactory().makeVendingMachineProduct("A2", "Kit-Kat"));
         assertNotNull(productRecord);
     }
+
+    /**
+     * This checks that the factory throws an exception when creating an instance of IProductRecord
+     * with a null product.
+     */
+    @Test
+    public void productRecordNull(){
+        IVendingMachineProduct product = null;
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            IProductRecord record = getFactory().makeProductRecord(product);
+        });
+        String expected = "Vending Machine Product cannot be null.";
+        String actual = exception.getMessage();
+
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * This checks that the factory throws an exception when creating an instance of IVendingMachineProduct
+     * with a null lane code.
+     */
+    @Test
+    public void testVendingMachineProductNullLaneCode(){
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            IVendingMachineProduct product = getFactory().makeVendingMachineProduct(null, "descr");
+        });
+        String expected = "Lane code cannot be null.";
+        String actual = exception.getMessage();
+
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * This checks that the factory throws an exception when creating an instance of IVendingMachineProduct
+     * with a null description.
+     */
+    @Test
+    public void testVendingMachineProductNullDescription(){
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            IVendingMachineProduct product = getFactory().makeVendingMachineProduct("H8", null);
+        });
+        String expected = "Description cannot be null.";
+        String actual = exception.getMessage();
+
+        assertEquals(expected, actual);
+    }
+
+    /**
+     * This checks that the factory throws an exception when creating an instance of IVendingMachineProduct
+     * with a null lane code and description.
+     */
+    @Test
+    public void testVendingMachineProductNullLaneCodeAndDescription(){
+
+        Exception exception = assertThrows(NullPointerException.class, () -> {
+            IVendingMachineProduct product = getFactory().makeVendingMachineProduct(null, null);
+        });
+        String expected = "Lane code and description cannot be null.";
+        String actual = exception.getMessage();
+
+        assertEquals(expected, actual);
+    }
+
 }

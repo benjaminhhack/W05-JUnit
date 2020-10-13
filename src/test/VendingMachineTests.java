@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This is a JUnit test class for the Vending Machine ADT
+ */
 public class VendingMachineTests extends AbstractFactoryClient{
     private IVendingMachine vendingMachine;
     private IVendingMachineProduct product;
@@ -28,12 +31,11 @@ public class VendingMachineTests extends AbstractFactoryClient{
         vendingMachine = null;
     }
 
-    /*
-     * Test methods
+    /**
+     * This checks that the register and unregister product methods work as expected.
      */
     @Test
     public void testRegisterAndUnregisterProduct1() throws LaneCodeAlreadyInUseException, LaneCodeNotRegisteredException {
-//      expected performance
         assertEquals(0, vendingMachine.getNumberOfProducts());
         vendingMachine.registerProduct(product);
         assertEquals(1, vendingMachine.getNumberOfProducts());
@@ -48,10 +50,12 @@ public class VendingMachineTests extends AbstractFactoryClient{
 
     }
 
-
+    /**
+     * This checks that the register product method throws the appropriate exception
+     * when one registers a new product with same lane code
+     */
     @Test
     public void testRegisterProduct1() throws LaneCodeAlreadyInUseException {
-//      register new product with same lane code
 
         vendingMachine.registerProduct(product);
         assertEquals(vendingMachine.getNumberOfProducts(), 1);
@@ -64,9 +68,12 @@ public class VendingMachineTests extends AbstractFactoryClient{
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+    /**
+     * This checks that the register product method throws the appropriate exception
+     * when one registers a null product
+     */
     @Test
     public void testRegisterProduct2() throws NullPointerException {
-//      register new product with same lane code
         product = null;
 
         Exception exception = assertThrows(NullPointerException.class, () -> vendingMachine.registerProduct(product));
@@ -74,9 +81,12 @@ public class VendingMachineTests extends AbstractFactoryClient{
         assertNotNull(exception);
     }
 
+    /**
+     * This checks that the unregister product method throws the appropriate exception
+     * when one unregisters a product that doesn't exist
+     */
     @Test
     public void testUnregisterProduct1(){
-        // unregister a product that doesn't exist
         Exception exception = assertThrows(LaneCodeNotRegisteredException.class, () -> vendingMachine.unregisterProduct(product));
 
         String expectedMessage = "This lane code is not registered";
@@ -85,6 +95,10 @@ public class VendingMachineTests extends AbstractFactoryClient{
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+    /**
+     * This checks that the unregister product method throws the appropriate exception
+     * when one unregisters a null product
+     */
     @Test
     public void testUnregisterProduct2() {
 
@@ -95,9 +109,11 @@ public class VendingMachineTests extends AbstractFactoryClient{
         assertNotNull(exception);
     }
 
+    /**
+     * This checks that the additem method works as expected.
+     */
     @Test
     public void testAddItem1() throws LaneCodeAlreadyInUseException, LaneCodeNotRegisteredException {
-        // lane code in vending machine also tests getters related to the object
         vendingMachine.registerProduct(product);
         assertEquals(0, vendingMachine.getTotalNumberOfItems());
         vendingMachine.addItem("A1");
@@ -121,6 +137,10 @@ public class VendingMachineTests extends AbstractFactoryClient{
 
     }
 
+    /**
+     * This checks that the addItem product method throws the appropriate exception
+     * when one adds an unregistered product
+     */
     @Test
     public void testAddItem2() {
         // add unregistered product
@@ -129,6 +149,9 @@ public class VendingMachineTests extends AbstractFactoryClient{
         assertNotNull(exception);
     }
 
+    /**
+     * This checks that the buyitem method works as expected.
+     */
     @Test
     public void testBuyItem1() throws LaneCodeAlreadyInUseException, LaneCodeNotRegisteredException, ProductUnavailableException {
         vendingMachine.registerProduct(product);
@@ -150,9 +173,12 @@ public class VendingMachineTests extends AbstractFactoryClient{
 
     }
 
+    /**
+     * This checks that the buyItem product method throws the appropriate exception
+     * when one buys an unregistered or unavailable product
+     */
     @Test
     public void testBuyItem2() throws LaneCodeAlreadyInUseException {
-        // tests throws exceptions
         Exception laneNotRegisteredException = assertThrows(common.LaneCodeNotRegisteredException.class, () -> vendingMachine.buyItem("A1"));
 
         assertNotNull(laneNotRegisteredException);
@@ -165,9 +191,11 @@ public class VendingMachineTests extends AbstractFactoryClient{
 
     }
 
+    /**
+     * This checks that the getMostPopular method works as expected.
+     */
     @Test
     public void  testGetMostPopular1() throws LaneCodeAlreadyInUseException, LaneCodeNotRegisteredException, ProductUnavailableException {
-        // expected response
         vendingMachine.registerProduct(product);
         vendingMachine.registerProduct(getFactory().makeVendingMachineProduct("A2", "Milk"));
 
@@ -184,18 +212,30 @@ public class VendingMachineTests extends AbstractFactoryClient{
         assertEquals(product, vendingMachine.getMostPopular());
     }
 
+    /**
+     * This checks that the getMostPopular method throws the appropriate exception
+     * when no products have been registered
+     */
     @Test
     public void testGetMostPopular2(){
         Exception exception = assertThrows(LaneCodeNotRegisteredException.class, () -> vendingMachine.getMostPopular());
         assertNotNull(exception);
     }
 
+    /**
+     * This checks that the getNumberofItems method throws the appropriate exception
+     * when no products have been registered
+     */
     @Test
     public void testExceptionOnGetNumberOfItems() {
         Exception exception = assertThrows(LaneCodeNotRegisteredException.class, () -> vendingMachine.getNumberOfItems("Z6"));
         assertNotNull(exception);
     }
 
+    /**
+     * This checks that the getNumberOfSalesmethod throws the appropriate exception
+     * when no products have been registered
+     */
     @Test
     public void testExceptionOnGetNumberOfSales() {
         Exception exception = assertThrows(LaneCodeNotRegisteredException.class, () -> vendingMachine.getNumberOfSales("Z6"));
