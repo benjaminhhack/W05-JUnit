@@ -12,13 +12,15 @@ import interfaces.IProductRecord;
  */
 public class ProductRecord implements IProductRecord {
 
-    int numberOfSales;
-    int numberAvailable;
+    String laneCode;
+    int numberOfSales = 0;
+    int numberAvailable = 0;
+    IVendingMachineProduct product;
+
 
     @Override
     public IVendingMachineProduct getProduct() {
-        // TODO Auto-generated method stub
-        return null;
+        return product;
     }
 
     @Override

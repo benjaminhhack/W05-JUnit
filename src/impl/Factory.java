@@ -31,7 +31,7 @@ public final class Factory implements IFactory {
 
     @Override
     public IVendingMachineProduct makeVendingMachineProduct(String laneCode, String description) {
-        return new VendingMachineProduct();
+        return new VendingMachineProduct(laneCode, description);
     }
 
     @Override
