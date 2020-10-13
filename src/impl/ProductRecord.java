@@ -1,8 +1,6 @@
 package impl;
 
 import common.ProductUnavailableException;
-import interfaces.IFactory;
-import interfaces.IVendingMachine;
 import interfaces.IVendingMachineProduct;
 import interfaces.IProductRecord;
 

@@ -10,7 +10,6 @@ import interfaces.IVendingMachine;
 import interfaces.IProductRecord;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class represents a simple vending machine which can stock and sell products.
