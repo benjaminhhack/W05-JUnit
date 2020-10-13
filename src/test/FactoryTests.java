@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * This is a JUnit test class for the Factory ADT
  */
-public class Tests extends AbstractFactoryClient {
+public class FactoryTests extends AbstractFactoryClient {
 
     /**
      * This checks that the factory was able to call a sensible constructor to get a non-null instance of IVendingMachineProduct.
