@@ -92,7 +92,7 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
 
         int maxSales = 0;
 
-        String firstKey = products.keySet().stream().findFirst().get();
+        String firstKey = products.keySet().stream().findFirst().get(); //https://stackoverflow.com/a/45705138/12693912
         IVendingMachineProduct mostPopular = products.get(firstKey).getProduct(); //sets the first registered product to the most
 
         for (IProductRecord record: products.values()){

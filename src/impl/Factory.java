@@ -32,17 +32,11 @@ public final class Factory implements IFactory {
 
     @Override
     public IVendingMachineProduct makeVendingMachineProduct(String laneCode, String description) {
-        // checks if null parameters then creates if not
-        if (laneCode == null && description == null) throw new NullPointerException("Lane code and description cannot be null.");
-        if (laneCode == null) throw new NullPointerException("Lane code cannot be null.");
-        if (description == null) throw new NullPointerException("Description cannot be null.");
         return new VendingMachineProduct(laneCode, description);
     }
 
     @Override
     public IProductRecord makeProductRecord(IVendingMachineProduct vendingMachineProduct) {
-        // checks if null parameter then creates if not
-        if (vendingMachineProduct == null) throw new NullPointerException("Vending Machine Product cannot be null.");
         return new ProductRecord(vendingMachineProduct);
     }
 
