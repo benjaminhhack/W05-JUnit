@@ -36,7 +36,7 @@ public final class Factory implements IFactory {
 
     @Override
     public IProductRecord makeProductRecord(IVendingMachineProduct vendingMachineProduct) {
-        return new ProductRecord();
+        return new ProductRecord(vendingMachineProduct);
     }
 
     @Override

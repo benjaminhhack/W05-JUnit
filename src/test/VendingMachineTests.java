@@ -87,10 +87,10 @@ public class VendingMachineTests extends AbstractFactoryClient{
 
     @Test
     public void testUnregisterProduct2() {
-//      register new product with same lane code
+
         product = null;
 
-        Exception exception = assertThrows(LaneCodeNotRegisteredException.class, () -> vendingMachine.unregisterProduct(product));
+        Exception exception = assertThrows(NullPointerException.class, () -> vendingMachine.unregisterProduct(product));
 
         assertNotNull(exception);
     }
@@ -180,7 +180,7 @@ public class VendingMachineTests extends AbstractFactoryClient{
             vendingMachine.buyItem("A1");
             if (i % 2 != 0) vendingMachine.buyItem("A2");
         }
-
+        IVendingMachineProduct mostPopular = vendingMachine.getMostPopular();
         assertEquals(product, vendingMachine.getMostPopular());
     }
 

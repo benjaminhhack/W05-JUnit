@@ -10,6 +10,7 @@ import interfaces.IVendingMachine;
 import interfaces.IProductRecord;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents a simple vending machine which can stock and sell products.
@@ -17,56 +18,44 @@ import java.util.HashMap;
  */
 public class VendingMachine extends AbstractFactoryClient implements IVendingMachine {
 
-    public HashMap<IVendingMachineProduct, IProductRecord> products;
-    public HashMap<String, Integer> numberOfItems;
-    public HashMap<String, Integer> numberOfSales;
+    public HashMap<String, IProductRecord> products;
 
     public VendingMachine(){
         this.products = new HashMap<>();
-        this.numberOfItems = new HashMap<>();
-        this.numberOfSales = new HashMap<>();
     }
 
     @Override
     public void registerProduct(IVendingMachineProduct vendingMachineProduct) throws LaneCodeAlreadyInUseException, NullPointerException {
 
-        if (products.containsKey(vendingMachineProduct)) throw new LaneCodeAlreadyInUseException();
-        if(vendingMachineProduct == null) throw new NullPointerException();
+        if (products.containsKey(vendingMachineProduct.getLaneCode())) throw new LaneCodeAlreadyInUseException();
 
-        IProductRecord record = new ProductRecord();
-        products.put(vendingMachineProduct, record);
-        numberOfItems.put(vendingMachineProduct.getLaneCode(), 0);
-        numberOfSales.put(vendingMachineProduct.getLaneCode(), 0);
+        IProductRecord record = new ProductRecord(vendingMachineProduct);
+        products.put(vendingMachineProduct.getLaneCode(), record);
     }
 
     @Override
     public void unregisterProduct(IVendingMachineProduct vendingMachineProduct) throws LaneCodeNotRegisteredException {
-        if (!products.containsKey(vendingMachineProduct)) throw new LaneCodeNotRegisteredException();
+        if (!products.containsKey(vendingMachineProduct.getLaneCode())) throw new LaneCodeNotRegisteredException();
 
-
-        products.remove(vendingMachineProduct);
+        products.remove(vendingMachineProduct.getLaneCode());
     }
 
     @Override
     public void addItem(String laneCode) throws LaneCodeNotRegisteredException {
 
-        if (!numberOfItems.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
-        int count = numberOfItems.get(laneCode);
+        if (!products.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
 
-        numberOfItems.put(laneCode, ++count);
+        IProductRecord record = products.get(laneCode);
+        record.addItem();
     }
 
     @Override
     public void buyItem(String laneCode) throws ProductUnavailableException, LaneCodeNotRegisteredException {
-        if (!numberOfItems.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
-        if (numberOfItems.get(laneCode) == 0) throw new ProductUnavailableException();
+        if (!products.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
+        if (products.get(laneCode).getNumberAvailable() == 0) throw new ProductUnavailableException();
 
-        int saleCount = numberOfSales.get(laneCode);
-        numberOfSales.put(laneCode, ++saleCount);
-
-        int itemCount = numberOfItems.get(laneCode);
-        numberOfItems.put(laneCode, --itemCount);
-
+        IProductRecord record = products.get(laneCode);
+        record.buyItem();
     }
 
     @Override
@@ -77,28 +66,47 @@ public class VendingMachine extends AbstractFactoryClient implements IVendingMac
     @Override
     public int getTotalNumberOfItems() {
         int total = 0;
-        for (String key: numberOfItems.keySet()){
-            total += numberOfItems.get(key);
+        for (IProductRecord record: products.values()){
+            total += record.getNumberAvailable();
         }
         return total;
     }
 
     @Override
     public int getNumberOfItems(String laneCode) throws LaneCodeNotRegisteredException {
-        if (!numberOfItems.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
-        return numberOfItems.get(laneCode);
+        if (!products.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
+        return products.get(laneCode).getNumberAvailable();
     }
 
     @Override
     public int getNumberOfSales(String laneCode) throws LaneCodeNotRegisteredException {
-        if (!numberOfSales.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
-        return numberOfSales.get(laneCode);
+        if (!products.containsKey(laneCode)) throw new LaneCodeNotRegisteredException();
+        return products.get(laneCode).getNumberOfSales();
     }
 
     @Override
     public IVendingMachineProduct getMostPopular() throws LaneCodeNotRegisteredException {
 
-        return null;
+        if (products.size() < 1) throw new LaneCodeNotRegisteredException();
+
+        /* starts at first product registered most popular, only returns one product
+         *
+         */
+        int maxSales = 0;
+
+        String firstKey = products.keySet().stream().findFirst().get();
+        IVendingMachineProduct mostPopular = products.get(firstKey).getProduct();
+
+        for (IProductRecord record: products.values()){
+
+            if (record.getNumberOfSales() > maxSales) {
+                mostPopular = record.getProduct();
+                maxSales = record.getNumberOfSales();
+            }
+
+        }
+
+        return mostPopular;
     }
 
 }

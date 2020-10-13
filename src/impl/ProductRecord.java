@@ -12,11 +12,15 @@ import interfaces.IProductRecord;
  */
 public class ProductRecord implements IProductRecord {
 
-    String laneCode;
-    int numberOfSales = 0;
-    int numberAvailable = 0;
+    int numberOfSales;
+    int numberAvailable;
     IVendingMachineProduct product;
 
+    public ProductRecord(IVendingMachineProduct product) {
+        this.numberOfSales = 0;
+        this.numberAvailable = 0;
+        this.product = product;
+    }
 
     @Override
     public IVendingMachineProduct getProduct() {
@@ -35,14 +39,14 @@ public class ProductRecord implements IProductRecord {
 
     @Override
     public void addItem() {
-        // TODO Auto-generated method stub
-
+        numberAvailable++;
     }
 
     @Override
     public void buyItem() throws ProductUnavailableException {
-        // TODO Auto-generated method stub
-
+        if (numberAvailable < 1) throw new ProductUnavailableException();
+        numberOfSales++;
+        numberAvailable--;
     }
 
 }
