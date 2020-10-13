@@ -188,7 +188,6 @@ public class VendingMachineTests extends AbstractFactoryClient{
         Exception productUnvailableException = assertThrows(common.ProductUnavailableException.class, () -> vendingMachine.buyItem("A1"));
 
         assertNotNull(productUnvailableException);
-
     }
 
     /**
@@ -263,5 +262,4 @@ public class VendingMachineTests extends AbstractFactoryClient{
         Exception exception = assertThrows(LaneCodeNotRegisteredException.class, () -> vendingMachine.getNumberOfSales("Z6"));
         assertNotNull(exception);
     }
-
 }

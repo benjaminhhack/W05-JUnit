@@ -21,8 +21,6 @@ public class ProductRecord implements IProductRecord {
         this.product = product;
     }
 
-
-
     @Override
     public IVendingMachineProduct getProduct() {
         return product;

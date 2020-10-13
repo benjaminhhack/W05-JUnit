@@ -30,7 +30,6 @@ public final class Factory implements IFactory {
         return factoryInstance;
     }
 
-
     @Override
     public IVendingMachineProduct makeVendingMachineProduct(String laneCode, String description) {
         // checks if null parameters then creates if not
