@@ -192,7 +192,7 @@ public class VendingMachineTests extends AbstractFactoryClient{
     }
 
     /**
-     * This checks that the getMostPopular method works as expected.
+     * This checks that the getMostPopular method works as expected with a definite most popular item.
      */
     @Test
     public void  testGetMostPopular1() throws LaneCodeAlreadyInUseException, LaneCodeNotRegisteredException, ProductUnavailableException {
@@ -211,13 +211,35 @@ public class VendingMachineTests extends AbstractFactoryClient{
         IVendingMachineProduct mostPopular = vendingMachine.getMostPopular();
         assertEquals(product, vendingMachine.getMostPopular());
     }
+    /**
+     * This checks that the getMostPopular method works as expected with an ambiguous most popular item.
+     */
+    @Test
+    public void  testGetMostPopular2() throws LaneCodeAlreadyInUseException, LaneCodeNotRegisteredException, ProductUnavailableException {
+        vendingMachine.registerProduct(product);
+        IVendingMachineProduct otherProduct = getFactory().makeVendingMachineProduct("A2", "Milk");
+        vendingMachine.registerProduct(otherProduct);
+
+        for (int i = 0; i<8; i++){
+            vendingMachine.addItem("A1");
+            vendingMachine.addItem("A2");
+        }
+
+        for (int i = 0; i < 3; i++){
+            vendingMachine.buyItem("A1");
+            vendingMachine.buyItem("A2");
+        }
+
+        IVendingMachineProduct mostPopular = vendingMachine.getMostPopular();
+        assertTrue(product.equals(vendingMachine.getMostPopular()) || otherProduct.equals(vendingMachine.getMostPopular()));
+    }
 
     /**
      * This checks that the getMostPopular method throws the appropriate exception
      * when no products have been registered
      */
     @Test
-    public void testGetMostPopular2(){
+    public void testGetMostPopular3(){
         Exception exception = assertThrows(LaneCodeNotRegisteredException.class, () -> vendingMachine.getMostPopular());
         assertNotNull(exception);
     }
