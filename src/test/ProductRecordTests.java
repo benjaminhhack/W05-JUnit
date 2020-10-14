@@ -33,7 +33,7 @@ public class ProductRecordTests extends AbstractFactoryClient {
     }
 
     /**
-     * This checks that a a record can't be created with a null product.
+     * This checks that a record can't be created with a null product.
      */
     @Test
     public void testNullProduct(){
@@ -54,6 +54,25 @@ public class ProductRecordTests extends AbstractFactoryClient {
     public void testGetProduct(){
         assertEquals(product, record.getProduct());
     }
+
+    /**
+     * This checks the getNumberAvailable method works
+     * and that 0 items are available at the start.
+     */
+    @Test
+    public void testNumberAvailable(){
+        assertEquals(0, record.getNumberAvailable());
+    }
+
+    /**
+     * This checks the getNumberofSales method works
+     * and that 0 items have been sold at the start.
+     */
+    @Test
+    public void testNumberOfSales(){
+        assertEquals(0, record.getNumberOfSales());
+    }
+
 
     /**
      * This checks that the addItem method works.
@@ -90,7 +109,7 @@ public class ProductRecordTests extends AbstractFactoryClient {
     }
 
     /**
-     * This checks that the buy item throwns the appropriate exception when the product
+     * This checks that the buy item throws the appropriate exception when the product
      * is not available.
      */
     @Test

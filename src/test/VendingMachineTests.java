@@ -32,6 +32,13 @@ public class VendingMachineTests extends AbstractFactoryClient{
     }
 
     /**
+     * This checks that the getNumberOfProducts method works.
+     */
+    @Test
+    public void testGetNumberOfProducts(){
+        assertEquals(0, vendingMachine.getNumberOfProducts());
+    }
+    /**
      * This checks that the register and unregister product methods work as expected.
      */
     @Test
@@ -58,7 +65,7 @@ public class VendingMachineTests extends AbstractFactoryClient{
     public void testRegisterProduct1() throws LaneCodeAlreadyInUseException {
 
         vendingMachine.registerProduct(product);
-        assertEquals(vendingMachine.getNumberOfProducts(), 1);
+        assertEquals(1, vendingMachine.getNumberOfProducts());
 
         Exception exception = assertThrows(common.LaneCodeAlreadyInUseException.class, () -> vendingMachine.registerProduct(product));
 
@@ -185,9 +192,9 @@ public class VendingMachineTests extends AbstractFactoryClient{
 
 
         vendingMachine.registerProduct(product);
-        Exception productUnvailableException = assertThrows(common.ProductUnavailableException.class, () -> vendingMachine.buyItem("A1"));
+        Exception productUnavailableException = assertThrows(common.ProductUnavailableException.class, () -> vendingMachine.buyItem("A1"));
 
-        assertNotNull(productUnvailableException);
+        assertNotNull(productUnavailableException);
     }
 
     /**
@@ -217,16 +224,20 @@ public class VendingMachineTests extends AbstractFactoryClient{
     public void  testGetMostPopular2() throws LaneCodeAlreadyInUseException, LaneCodeNotRegisteredException, ProductUnavailableException {
         vendingMachine.registerProduct(product);
         IVendingMachineProduct otherProduct = getFactory().makeVendingMachineProduct("A2", "Milk");
+        IVendingMachineProduct lessPopularProduct = getFactory().makeVendingMachineProduct("A3", "Eggs");
         vendingMachine.registerProduct(otherProduct);
+        vendingMachine.registerProduct(lessPopularProduct);
 
         for (int i = 0; i<8; i++){
             vendingMachine.addItem("A1");
             vendingMachine.addItem("A2");
+            vendingMachine.addItem("A3");
         }
 
         for (int i = 0; i < 3; i++){
             vendingMachine.buyItem("A1");
             vendingMachine.buyItem("A2");
+            if (i % 2 == 0) vendingMachine.buyItem("A3");
         }
 
         IVendingMachineProduct mostPopular = vendingMachine.getMostPopular();
@@ -254,7 +265,7 @@ public class VendingMachineTests extends AbstractFactoryClient{
     }
 
     /**
-     * This checks that the getNumberOfSalesmethod throws the appropriate exception
+     * This checks that the getNumberOfSales method throws the appropriate exception
      * when no products have been registered
      */
     @Test
