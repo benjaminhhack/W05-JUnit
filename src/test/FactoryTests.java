@@ -64,7 +64,7 @@ public class FactoryTests extends AbstractFactoryClient {
      * with a null lane code.
      */
     @Test
-    public void testVendingMachineProductNullLaneCode(){
+    public void vendingMachineProductNullLaneCode(){
 
         Exception exception = assertThrows(NullPointerException.class, () -> {
             IVendingMachineProduct product = getFactory().makeVendingMachineProduct(null, "descr");
@@ -80,7 +80,7 @@ public class FactoryTests extends AbstractFactoryClient {
      * with a null description.
      */
     @Test
-    public void testVendingMachineProductNullDescription(){
+    public void vendingMachineProductNullDescription(){
 
         Exception exception = assertThrows(NullPointerException.class, () -> {
             IVendingMachineProduct product = getFactory().makeVendingMachineProduct("H8", null);
